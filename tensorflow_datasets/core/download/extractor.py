@@ -43,6 +43,13 @@ else:
   # py2's built-in bz2 package does not support reading from file objects.
   import bz2file as bz2  # pylint:disable=g-import-not-at-top
 
+# TODO(tfds): Remove once https://bugs.python.org/issue39430 is fixed
+# This is a hack to avoid race condition on import during tarfile extraction.
+try:
+  from lzma import LZMAFile  # pylint: disable=g-import-not-at-top,unused-import
+except ImportError:
+  pass
+
 
 @utils.memoize()
 def get_extractor(*args, **kwargs):
